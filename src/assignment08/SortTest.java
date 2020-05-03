@@ -14,6 +14,11 @@ public class SortTest {
 			else {
 				break;
 			}
+		}
+		//if the number of integers more than the limit, finsh this program.
+		if(sc.hasNextInt()){
+			System.out.println("Formatt Error!");
+			return;
 		}	
 		sc.close();
 	}
