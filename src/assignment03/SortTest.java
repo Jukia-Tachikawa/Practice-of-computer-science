@@ -1,4 +1,4 @@
-package assignment03;
+package assignment08;
 import java.util.*;
 import java.io.*;
 public class SortTest {
@@ -14,7 +14,13 @@ public class SortTest {
 			else {
 				break;
 			}
-		}	
+		}
+
+		if(sc.hasNext()){ //入力が10000個を超える場合は例外を発生する.
+			sc.close();
+			throw new TooManyInputExceotion();
+		}
+
 		sc.close();
 	}
 	
@@ -51,20 +57,33 @@ public class SortTest {
 			try {
 				SortTest.inputArrayListFromFile(filename, arrayList);
 			}catch(FileNotFoundException e) {	//ファイルが見つからなければ再度入力させる.
-				System.out.println("指定されたファイルが見つかりません。");
+				System.out.println("エラー: 指定されたファイルが見つかりません。");
 				System.out.println("ファイル名を入力してください.");
 				filename = sc.next();
 				continue;
-			}catch(InputMismatchException e) { //intでないものを含むときは実行終了
-				System.out.println("ファイルの形式が不適切です。");
+			}catch(InputMismatchException e) { //int型以外を含むときは再度入力.
+				System.out.println("エラー: sortできないものが含まれています。");
+				System.out.println("ファイル名を入力してください.");
+				filename = sc.next();
+				continue;
+			}catch(TooManyInputExceotion e){
+				System.out.println("エラー: 10000個以上入力できません。");
 				System.out.println("ファイル名を入力してください.");
 				filename = sc.next();
 				continue;
 			}
+			sc.close();
 			break;
 		}
 		
-		BubbleSort.sort(arrayList);
+		QuickSort.sort(arrayList);
 		SortTest.outputArrayListToConsole(arrayList);
+	}
+}
+
+//１００００個を超える入力に対する例外
+class TooManyInputExceotion extends RuntimeException{
+	TooManyInputExceotion(){
+			super();
 	}
 }
