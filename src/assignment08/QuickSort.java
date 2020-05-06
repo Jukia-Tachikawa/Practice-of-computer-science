@@ -2,7 +2,7 @@ package assignment08;
 import java.util.*;
 
 public class QuickSort {
-	private static final int bubble_size = 2;
+	private static final int INSERT_SIZE = 4;
 	private static ArrayList<Integer> list;  //ソートするArrayList
 	
 	public static void sort(ArrayList<Integer> arrayList) {
@@ -11,15 +11,20 @@ public class QuickSort {
 	}
 	
 	private static void partition(int firstIndex, int lastIndex) {
-		if(lastIndex - firstIndex <= bubble_size){
-			//要素数が少ない時はバブルソートする.
-			for(int i = lastIndex; i > firstIndex; i--) {
-				for(int j = firstIndex; j < i; j++) {
-					int next = list.get(j+1);
-					if(list.get(j) > next) {
-						list.set(j+1, list.set(j, next));
+		//要素数がINSER_SIZE以下の時は挿入ソートする.
+		if(lastIndex - firstIndex <= INSERT_SIZE){
+			for(int i = firstIndex + 1; i <= lastIndex; i++) {
+				int pnum = list.get(i);
+
+				if(list.get(i-1) > pnum){
+					int j = i;
+					while(j > 0 && list.get(j-1) > pnum){
+						list.set(j, list.get(j-1));
+						j--;
 					}
+					list.set(j, pnum);
 				}
+			
 			}
 			return;
 		}else {
@@ -28,7 +33,7 @@ public class QuickSort {
 			
 			//入れ替えが必要なところまでleft,rightを移動させる.
 			for(;list.get(left) < pivotValue; left++);
-			for(;list.get(right) > pivotValue; right--); //問題あり ->　"以上" から　"より大きい"
+			for(;list.get(right) > pivotValue; right--); 
 	
 			
 			//pivot未満が前にpivot以上が後ろになるように並べ替える.
@@ -55,13 +60,16 @@ public class QuickSort {
 			 *     | |...|left-1|left|...|　|
 			 * 		
 			 * 		上図のようにlistを分割する
-			 * 	pivotを最小値、または最大値となるようにとるとArrayIndexOutOfBoundsExceptionとなる.
+			 * 	pivotを最小値、または最大値となるようにとるとArrayIndexOutOfBoundsExceptionとなる可能性がある.
+			 *  pivot()でそうならないようにする.
 			 */
+
 			partition(firstIndex, left-1); 
 			partition(left, lastIndex);
 		}
 	}
-	//partitionの仕様の関係で,pivotが最小値,最大値のどちらにもならないようにとる必要がある.
+	
+	//最初と最後、そして真ん中のあたりの中央値をpivotとする.
 	static int pivot(int firstIndex, int lastIndex) { 
 		int middleIndex = (firstIndex + lastIndex) / 2;
 		int e1 = list.get(firstIndex), e2 = list.get(middleIndex), e3 = list.get(lastIndex);
