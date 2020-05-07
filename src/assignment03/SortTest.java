@@ -1,4 +1,4 @@
-package assignment08;
+package assignment03;
 import java.util.*;
 import java.io.*;
 public class SortTest {
@@ -76,7 +76,7 @@ public class SortTest {
 			break;
 		}
 		
-		QuickSort.sort(arrayList);
+		BubbleSort.sort(arrayList);
 		SortTest.outputArrayListToConsole(arrayList);
 	}
 }
