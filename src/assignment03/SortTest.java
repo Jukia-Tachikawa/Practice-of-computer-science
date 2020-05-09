@@ -2,86 +2,78 @@ package assignment03;
 import java.util.*;
 import java.io.*;
 public class SortTest {
-	
+
 	//入力ファイル名とArrayListを受け取り, 入力ファイル内の整数を読み込んで, arrayListに格納する.
 	private static void inputArrayListFromFile(String filename, ArrayList<Integer> arrayList) throws FileNotFoundException{
 		Scanner sc = new Scanner(new File(filename));
-		//10000個まで整数を読み込む.
-		for(int i = 0; i < 10000; i++) {
+		//10,001回整数を読み込む.
+		for(int i = 1; i <= 10001; i++) {
 			if(sc.hasNext()) {
 				arrayList.add(sc.nextInt());
 			}
-			else {
-				break;
+			else { //入力された整数がi-1個(i=1,...,10,001)の場合はメソッドの処理は終了
+				sc.close();
+				return;
 			}
 		}
 
-		if(sc.hasNext()){ //入力が10000個を超える場合は例外を発生する.
-			sc.close();
-			throw new TooManyInputExceotion();
-		}
-
+	  //入力が10,000個を超える場合は例外を発生する.
 		sc.close();
+		throw new TooManyInputExceotion();
 	}
-	
+
 	//ソートされたデータを標準出力に出力する.
 	private static void outputArrayListToConsole(ArrayList<Integer> arrayList) {
-		
+
 		for(int i = 0; i < arrayList.size(); i++) {
-			if(i % 10 == 9) {
+			if(i % 10 == 9) { //一番右端に表示される整数
 				System.out.printf(" %8d%n", arrayList.get(i));
 			}
-			else {
+			else { //それ以外
 				System.out.printf(" %8d", arrayList.get(i));
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		//整数列を格納するリスト
 		ArrayList<Integer> arrayList = new ArrayList<>();
-		Scanner sc = new Scanner(System.in);
-		
-				
+		//入力ファイル名
 		String filename;
-		//ファイル名が指定されていなければ、エラーメッセージを出しファイル名入力を求める。
+
+		//ファイル名が指定されていなければ、エラーメッセージを出し、プログラムを終了する。
 		if(args.length != 0) {
 			filename = args[0];
 		}else {
-			System.out.println("ファイル名を入力してください.");
-			filename = sc.next();
+			System.out.println("エラー: ファイル名が指定されていません. コマンドライン引数でファイル名を指定してください.");
+			return;
 		}
-		
-		//ファイルの読み込みとデータの格納
-		for(;;) {
-			try {
-				SortTest.inputArrayListFromFile(filename, arrayList);
-			}catch(FileNotFoundException e) {	//ファイルが見つからなければ再度入力させる.
-				System.out.println("エラー: 指定されたファイルが見つかりません。");
-				System.out.println("ファイル名を入力してください.");
-				filename = sc.next();
-				continue;
-			}catch(InputMismatchException e) { //int型以外を含むときは再度入力.
-				System.out.println("エラー: sortできないものが含まれています。");
-				System.out.println("ファイル名を入力してください.");
-				filename = sc.next();
-				continue;
-			}catch(TooManyInputExceotion e){
-				System.out.println("エラー: 10000個以上入力できません。");
-				System.out.println("ファイル名を入力してください.");
-				filename = sc.next();
-				continue;
-			}
-			sc.close();
-			break;
+
+		/*filename内の整数をarrayListに格納.
+		 *ファイルが見つからないとき, ファイルにint型の整数以外のものが含まれるとき,
+		 *ファイルに10,000個以上の整数が含まれるときはエラーメッセージを出し, プログラムを終了する.
+	 	*/
+		try {
+			SortTest.inputArrayListFromFile(filename, arrayList);
+		}catch(FileNotFoundException e) {
+			System.out.println("エラー: 指定されたファイルが見つかりません.");
+			return;
+		}catch(InputMismatchException e) {
+			System.out.println("エラー: ファイルの形式が不適切です. sortできないものが含まれています.");
+			return;
+		}catch(TooManyInputExceotion e){
+			System.out.println("エラー: ファイルの形式が不適切です. 10,000個以上入力できません.");
+			return;
 		}
-		
+
+		//sortを実行する.
 		BubbleSort.sort(arrayList);
+		//結果を出力する.
 		SortTest.outputArrayListToConsole(arrayList);
 	}
 }
 
-//１００００個を超える入力に対する例外
+//10,000個を超える入力に対する例外
 class TooManyInputExceotion extends RuntimeException{
 	TooManyInputExceotion(){
 			super();
