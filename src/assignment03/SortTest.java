@@ -1,6 +1,7 @@
 package assignment03;
 import java.util.*;
 import java.io.*;
+import myexception.NumberOfInputException;
 public class SortTest {
 
 	//入力ファイル名とArrayListを受け取り, 入力ファイル内の整数を読み込んで, arrayListに格納する.
@@ -19,7 +20,7 @@ public class SortTest {
 
 	  //入力が10,000個を超える場合は例外を発生する.
 		sc.close();
-		throw new TooManyInputExceotion();
+		throw new NumberOfInputException(" 10,000個以上入力できません.");
 	}
 
 	//ソートされたデータを標準出力に出力する.
@@ -61,8 +62,8 @@ public class SortTest {
 		}catch(InputMismatchException e) {
 			System.out.println("エラー: ファイルの形式が不適切です. sortできないものが含まれています.");
 			return;
-		}catch(TooManyInputExceotion e){
-			System.out.println("エラー: ファイルの形式が不適切です. 10,000個以上入力できません.");
+		}catch(NumberOfInputException e){
+			System.out.println("エラー: ファイルの形式が不適切です." + e.getMessage());
 			return;
 		}
 
@@ -70,12 +71,5 @@ public class SortTest {
 		BubbleSort.sort(arrayList);
 		//結果を出力する.
 		SortTest.outputArrayListToConsole(arrayList);
-	}
-}
-
-//10,000個を超える入力に対する例外
-class TooManyInputExceotion extends RuntimeException{
-	TooManyInputExceotion(){
-			super();
 	}
 }
