@@ -1,70 +1,77 @@
 package assignment04;
-import java.util.*;
 
-public class MyListTest {
-	public static void main(String[] args) {
-		//自然数のリスト
-		LinkedList<Integer> list = new LinkedList<>();
-		
-		MyListTest.input(list);
-		MyListTest.insertTest(list);
-		MyListTest.deleteTest(list);
-		sc.close();
-	}
-	
+import java.util.*;
+import myexception.IllegalInputIntegerException;
+
+public class MyListTest{
+	// 標準入力のScanner
 	private static Scanner sc = new Scanner(System.in);
-	
-	//課題内容中の1の動作を行う.
+
+	//10個の自然数をキーボードから入力し，それらを入力順に先頭から並べたリストを作り，画面に表示する．
 	private static void input(LinkedList<Integer> list) {
 		MyList mylist = new MyList();
-		
+
 		//自然数を10個listに追加する
-		for(;;) {
-			System.out.println("自然数を10個入力してください.");
-			try {
-				for(int i = 0; i < 10; i++) {
-					list.add(sc.nextInt());
-				}
-				mylist.output(list);
-				return;
-			}catch(InputMismatchException e) {  //int以外がふくまれたときは再度入力を求める.
-				System.out.println("入力形式が不適切です.");
-				sc.nextLine();
+		System.out.println("自然数を10個入力してください.");
+		for(int i = 0; i < 10; i++) {
+			int number = sc.nextInt();
+			if(number > 0){
+				list.add(number);
+			}else{
+				throw new IllegalInputIntegerException();
 			}
 		}
+		mylist.output(list); //listの内容を表示.
 	}
-	//課題内容中の2の動作を行う.
+
+	//次の処理を10回繰り返す: 自然数をキーボードから入力する度に，それを insert した結果のリストを出力する．
 	private static void insertTest(LinkedList<Integer> list) {
 		MyList mylist = new MyList();
 		//入力された1個の自然数についてinsertし,outputすることを10回行う.
-		int count = 0;
-		while(count < 10) {
-			System.out.println("insert: 自然数を1個入力してください.");
-			try {
-				mylist.insert(sc.nextInt(), list);
+		for(int i = 1; i <= 10; i++) {
+			System.out.println("insert-" + i + " : 自然数を1個入力してください.");
+			int number = sc.nextInt();
+			if(number > 0){
+				mylist.insert(number, list);
 				mylist.output(list);
-				count++;
-			}catch(InputMismatchException e) { //入力がintでなかった場合は10回のうちにカウントしないで次のループに移る。
-				System.out.println("入力形式が不適切です.");
-				sc.nextLine();
+			}else{ //int型で自然数でなければIllegalInputIntegerExceptionを発生.
+				throw new IllegalInputIntegerException();
 			}
 		}
 	}
-	//課題内容中の3の動作を行う.
+
+	/*
+	 * 次の処理を10回繰り返す: 自然数をキーボードから入力する度に，それを delete した結果のリストを出力する．
+	 * insertTest()とほぼ同様の仕様.
+	*/
 	private static void deleteTest(LinkedList<Integer> list) {
 		MyList mylist = new MyList();
 		//入力された1個の自然数についてdeleteし,outputすることを10回行う.
-		int count = 0;
-		while(count < 10) {
-			System.out.println("delete: 自然数を1個入力してください.");
-			try {
-				mylist.delete(sc.nextInt(), list);
+		for(int i = 1; i <= 10; i++) {
+			System.out.println("delete-"+ i +" : 自然数を1個入力してください.");
+			int number = sc.nextInt();
+			if(number > 0){
+				mylist.delete(number, list);
 				mylist.output(list);
-				count++;
-			}catch(InputMismatchException e) { //入力がintでなかった場合は10回のうちにカウントしないで次のループに移る。
-				System.out.println("入力形式が不適切です.");
-				sc.nextLine();
+			}else{ //int型で自然数でなければIllegalInputIntegerExceptionを発生.
+				throw new IllegalInputIntegerException();
 			}
+		}
+	}
+
+	public static void main(String[] args) {
+		//自然数のリスト
+		LinkedList<Integer> list = new LinkedList<>();
+
+		try{
+			MyListTest.input(list);
+			MyListTest.insertTest(list);
+			MyListTest.deleteTest(list);
+		}catch(InputMismatchException | IllegalInputIntegerException e){ //入力が自然数でない場合はエラーメッセージを出し、プログラム終了.
+			System.out.println("エラー: 入力形式が不適切です. 自然数を入力してください.");
+			return;
+		}finally{
+			sc.close();
 		}
 	}
 }

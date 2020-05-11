@@ -8,7 +8,7 @@ public class MyList {
 		ListIterator<Integer> it = linkedList.listIterator();
 		while(it.hasNext()) {
 			if(x <= it.next()) {
-				it.previous();
+				it.previous(); // ひとつ前に戻る.
 				it.add(x);
 				return;
 			}
@@ -26,6 +26,6 @@ public class MyList {
 		for(Integer n:linkedList) {
 			System.out.print(n + " ");
 		}
-		System.out.print("\n");
+		System.out.print("\n"); //最後に改行.
 	}
 }
