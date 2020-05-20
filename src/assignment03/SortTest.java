@@ -1,7 +1,7 @@
 package assignment03;
 import java.util.*;
 import java.io.*;
-import myexception.NumberOfInputException;
+import util.myexception.NumberOfInputException;
 public class SortTest {
 
 	//入力ファイル名とArrayListを受け取り, 入力ファイル内の整数を読み込んで, arrayListに格納する.
