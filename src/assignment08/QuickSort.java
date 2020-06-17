@@ -60,10 +60,10 @@ public class QuickSort {
 			 *     | |...|left-1|left|...|　|
 			 * 		
 			 * 		上図のようにlistを分割する
-			 * 	pivotを最小値、または最大値となるようにとるとArrayIndexOutOfBoundsExceptionとなる可能性がある.
-			 *  pivot()でそうならないようにする.
 			 */
-
+			if(left == firstIndex){ //leftとfirstIndexが等しい時、うまく分割できるようにするため.
+				left++;
+			}
 			partition(firstIndex, left-1); 
 			partition(left, lastIndex);
 		}
