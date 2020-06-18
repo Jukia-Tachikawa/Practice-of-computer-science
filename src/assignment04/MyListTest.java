@@ -2,7 +2,7 @@ package assignment04;
 
 import java.util.*;
 import java.util.concurrent.*;
-import util.myexception.IllegalInputIntegerException;
+import util.myexception.*;;
 import util.io.*;
 
 public class MyListTest{
@@ -83,3 +83,8 @@ public class MyListTest{
 		}
 	}
 }
+
+/* 
+ * 初めに11以上入力したときにinsertまで行ってしまう
+ *
+*/

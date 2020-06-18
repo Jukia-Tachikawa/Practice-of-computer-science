@@ -26,7 +26,7 @@ public class StdinScanner{
       throw new RuntimeException(e.getCause());
     }
     /*　注意
-     * TimeoutException発生した後そのままではshutdownNow()でexecutorのスレッドが終了しない. 
+     * TimeoutException発生した後そのままではshutdownNow()でexecutorのスレッドが終了しない.
      * (TimeoutException発生した後もReadは実行中で, 割り込んでも応答しないから?)
      * shutdownNow()後, 何かを入力すると(Readの標準入力待ちが終われば?), executorのスレッドが終了する.
      * 入力なしに終わるにはSystem.exit()がある.　ただJVMが終了するのでexecutorのスレッドだけ終了させたいときには使えない.
@@ -40,6 +40,7 @@ public class StdinScanner{
       throw new InputMismatchException();
     }
   }
+
   // 終了処理を行う.
   public void close(){
     executor.shutdownNow();
